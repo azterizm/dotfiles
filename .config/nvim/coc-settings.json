@@ -1,0 +1,7 @@
+{
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "suggest.noselect": false,
+  "typescript.format.semicolons": "ignore",
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+  "suggest.triggerAfterInsertEnter": false
+}
