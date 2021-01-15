@@ -140,3 +140,13 @@ LS_COLORS="ow=01;36;40" && export LS_COLORS
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 autoload -Uz compinit
 compinit
+
+# FFF file manager
+f() {
+	fff "$@"
+	cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
+}
+export EDITOR="nvim"
+export FFF_TRASH=/root/.local/share/Trash
+export FFF_TRASH_CMD="trash"
+export FFF_FAV1=/mnt/d/code/
