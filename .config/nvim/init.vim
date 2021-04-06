@@ -13,8 +13,10 @@ set nu
 set nowrap
 set smartcase
 set noswapfile
-set nobackup
-set nowritebackup
+set backup
+set backupdir=~/.vim/backup
+set writebackup
+set backupcopy=yes
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
@@ -25,19 +27,17 @@ set updatetime=200
 set shortmess+=c
 set colorcolumn=80
 set nopaste
-set clipboard+=unnamedplus
 set autochdir
 set noshowmode
 set sessionoptions+=tabpages,globals
-set t_8b=^[[48;2;%lu;%lu;%lum
-set t_8f=^[[38;2;%lu;%lu;%lum
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set clipboard+=unnamedplus
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'ryanoasis/vim-devicons'
@@ -52,25 +52,29 @@ Plug 'tpope/vim-commentary'
 Plug 'rendon/vim-rooter'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'szw/vim-maximizer'
-Plug 'puremourning/vimspector'
-Plug 'ThePrimeagen/harpoon'
-Plug 'rakr/vim-one'
-Plug 'whatyouhide/vim-tmux-syntax'
-Plug 'tmux-plugins/vim-tmux'
-Plug 'connorholyday/vim-snazzy'
 Plug 'muellan/vim-toggle-ui-elements'
 Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'vim-scripts/confirm-quit'
-
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-Plug 'lambdalisue/nerdfont.vim'
-Plug 'lambdalisue/fern-hijack.vim'
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 Plug 'sainnhe/gruvbox-material'
 Plug 'morhetz/gruvbox'
 
 call plug#end()
+
+let g:clipboard = {
+      \   'name': 'win32yank-wsl',
+      \   'copy': {
+      \      '+': ['win32yank.exe', '-i', '--crlf'],
+      \      '*': ['win32yank.exe', '-i', '--crlf'],
+      \    },
+      \   'paste': {
+      \      '+': ['win32yank.exe', '-o', '--lf'],
+      \      '*': ['win32yank.exe', '-o', '--lf'],
+      \   },
+      \   'cache_enabled': 0,
+      \ }
 
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
@@ -97,7 +101,6 @@ let g:airline#extensions#branch#enabled = 0
 let g:airline_theme = 'gruvbox_material'
 let airline#extensions#tabline#tabs_label = ''
 let airline#extensions#tabline#show_splits = 0
-let g:fern#renderer = "nerdfont"
 
 let g:gruvbox_material_enable_italic = 0
 let g:gruvbox_material_disable_italic_comment = 1
@@ -126,6 +129,7 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 autocmd BufWritePre * :call TrimWhitespace()
+autocmd BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
 autocmd CursorHold * silent call CocActionAsync('highlight')
 let loaded_matchparen = 1
 let mapleader = " "
@@ -170,8 +174,7 @@ nmap <leader>ss :split<Return><C-w>w
 nmap <leader>sv :vsplit<Return><C-w>w
 inoremap <C-c> <esc>
 inoremap jj <ESC>
-nnoremap <leader>u :UndotreeShow<CR>
-nnoremap <leader>pv :Fern . -drawer -reveal=% -toggle<CR>
+nnoremap <leader>pv :NERDTreeToggle<CR>
 nnoremap <C-p> :Files<CR>
 map <Leader>pf :Files src/<CR>
 map <Leader>of :GFiles<CR>
@@ -190,6 +193,7 @@ nnoremap <leader>6 :b#<CR>
 nmap <leader>sh :StatusBarToggle<CR>
 nmap <leader>y <Plug>yankstack_substitute_older_paste
 nmap <leader>Y <Plug>yankstack_substitute_newer_paste
+nnoremap <leader>m :MaximizerToggle!<CR>
 
 nmap <leader>gh :call <SID>show_documentation()<CR>
 xmap <leader>gsa  <Plug>(coc-codeaction-selected)
@@ -231,22 +235,3 @@ nmap <leader>t; :call GotoBuffer(0)<CR>
 nmap <leader>t' :call GotoBuffer(1)<CR>
 nmap <leader>t. :call GotoBuffer(2)<CR>
 nmap <leader>t/ :call GotoBuffer(3)<CR>
-
-nnoremap <leader>m :MaximizerToggle!<CR>
-nnoremap <leader>dd :call vimspector#Launch()<CR>
-nnoremap <leader>dc :call GotoWindow(g:vimspector_session_windows.code)<CR>
-nnoremap <leader>dt :call GotoWindow(g:vimspector_session_windows.tagpage)<CR>
-nnoremap <leader>dv :call GotoWindow(g:vimspector_session_windows.variables)<CR>
-nnoremap <leader>dw :call GotoWindow(g:vimspector_session_windows.watches)<CR>
-nnoremap <leader>ds :call GotoWindow(g:vimspector_session_windows.stack_trace)<CR>
-nnoremap <leader>do :call GotoWindow(g:vimspector_session_windows.output)<CR>
-nnoremap <leader>de :call vimspector#Reset()<CR>
-nnoremap <leader>dtcb :call vimspector#CleanLineBreakpoint()<CR>
-nmap <leader>dl <Plug>VimspectorStepInto
-nmap <leader>dj <Plug>VimspectorStepOver
-nmap <leader>dk <Plug>VimspectorStepOut
-nmap <leader>d_ <Plug>VimspectorRestart
-nnoremap <leader>d<space> :call vimspector#Continue()<CR>
-nmap <leader>drc <Plug>VimspectorRunToCursor
-nmap <leader>dbp <Plug>VimspectorToggleBreakpoint
-nmap <leader>dcbp <Plug>VimspectorToggleConditionalBreakpoint
