@@ -32,20 +32,39 @@ set noshowmode
 set sessionoptions+=tabpages,globals
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 set clipboard+=unnamedplus
+set signcolumn=no
+set ttyfast
+
+set statusline=
+set statusline+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ ':''}
+set statusline+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ ':''}
+set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ RPLACE\ ':''}
+set statusline+=%#Cursor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
+set statusline+=\ %n\           " buffer number
+set statusline+=%#Visual#       " colour
+set statusline+=%{&paste?'\ PASTE\ ':''}
+set statusline+=%{&spell?'\ SPELL\ ':''}
+set statusline+=%#CursorIM#     " colour
+set statusline+=%R                        " readonly flag
+set statusline+=%M                        " modified [+] flag
+set statusline+=%#Cursor#               " colour
+set statusline+=%#CursorLine#     " colour
+set statusline+=\ %t\                   " short file name
+set statusline+=%=                          " right align
+set statusline+=%#CursorLine#   " colour
+set statusline+=\ %Y\                   " file type
+set statusline+=%#CursorIM#     " colour
+set statusline+=\ %3l:%-2c\         " line + column
+set statusline+=%#Cursor#       " colour
+set statusline+=\ %3p%%\                " percentage
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 call plug#begin('~/.vim/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'ryanoasis/vim-devicons'
 Plug 'jiangmiao/auto-pairs'
-Plug 'alvan/vim-closetag'
 Plug 'sheerun/vim-polyglot'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -53,58 +72,22 @@ Plug 'rendon/vim-rooter'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'szw/vim-maximizer'
 Plug 'muellan/vim-toggle-ui-elements'
-Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'junegunn/fzf.vim'
+Plug 'alvan/vim-closetag'
 
 Plug 'sainnhe/gruvbox-material'
-Plug 'morhetz/gruvbox'
 
 call plug#end()
 
-let g:clipboard = {
-      \   'name': 'win32yank-wsl',
-      \   'copy': {
-      \      '+': ['win32yank.exe', '-i', '--crlf'],
-      \      '*': ['win32yank.exe', '-i', '--crlf'],
-      \    },
-      \   'paste': {
-      \      '+': ['win32yank.exe', '-o', '--lf'],
-      \      '*': ['win32yank.exe', '-o', '--lf'],
-      \   },
-      \   'cache_enabled': 0,
-      \ }
-
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_types = 1
-let g:go_highlight_function_parameters = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_generate_tags = 1
-let g:go_highlight_format_strings = 1
-let g:go_highlight_variable_declarations = 1
-let g:go_auto_sameids = 1
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.jsx,*.ts,*.tsx'
 let g:indentLine_setColors = 0
 let g:indentLine_faster = 1
 let g:indentLine_setColors = 1
-let g:airline_section_x=''
-let g:airline_skip_empty_sections = 1
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#branch#enabled = 0
-let g:airline_theme = 'gruvbox_material'
-let airline#extensions#tabline#tabs_label = ''
-let airline#extensions#tabline#show_splits = 0
 
 let g:gruvbox_material_enable_italic = 0
 let g:gruvbox_material_disable_italic_comment = 1
-let g:gruvbox_material_background = 'medium'
+let g:gruvbox_material_background = 'soft'
 
 " Fugitive
 nmap <leader>gh :diffget //3<CR>
@@ -119,6 +102,7 @@ fun! TrimWhitespace()
 endfun
 
 " Functions
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 augroup highlight_yank
     autocmd!
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
@@ -162,7 +146,10 @@ command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImpo
 colorscheme gruvbox-material
 set background=dark
 
-" Keys
+nmap <leader>cs <cmd>bw! term<CR>
+nmap <leader>t' <cmd>term powershell.exe 'yarn dev:server:clean'<CR>
+nmap <leader>t" <cmd>term powershell.exe 'yarn serve:clean'<CR>
+
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>phw :h <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>h :wincmd h<CR>
@@ -172,12 +159,11 @@ nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>q :close<CR>
 nmap <leader>ss :split<Return><C-w>w
 nmap <leader>sv :vsplit<Return><C-w>w
-inoremap <C-c> <esc>
-inoremap jj <ESC>
-nnoremap <leader>pv :NERDTreeToggle<CR>
-nnoremap <C-p> :Files<CR>
-map <Leader>pf :Files src/<CR>
-map <Leader>of :GFiles<CR>
+nnoremap <leader>pv <cmd>CocCommand explorer<CR>
+nnoremap <leader>pf <cmd>Files src<CR>
+nnoremap <leader>pg <cmd>GFiles<CR>
+nnoremap <leader>ps <cmd>Files<CR>
+nnoremap <leader>pb <cmd>Buffers<CR>
 nnoremap <leader>pcc :e ~/.config/nvim/init.vim<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
@@ -190,6 +176,9 @@ nnoremap <leader>3 3gt
 nnoremap <leader>4 4gt
 nnoremap <leader>5 5gt
 nnoremap <leader>6 :b#<CR>
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-p> :bprevious<CR>
+inoremap <C-c> <esc>
 nmap <leader>sh :StatusBarToggle<CR>
 nmap <leader>y <Plug>yankstack_substitute_older_paste
 nmap <leader>Y <Plug>yankstack_substitute_newer_paste
@@ -231,7 +220,3 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-nmap <leader>t; :call GotoBuffer(0)<CR>
-nmap <leader>t' :call GotoBuffer(1)<CR>
-nmap <leader>t. :call GotoBuffer(2)<CR>
-nmap <leader>t/ :call GotoBuffer(3)<CR>
