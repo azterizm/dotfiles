@@ -41,6 +41,9 @@ bindsym $mod+Return exec alacritty
 # kill focused window
 bindsym $mod+Shift+q kill
 
+# refresh scripts
+bindsym $mod+Shift+p exec ~/.config/i3status/autoname_workspaces.py
+
 # menu
 bindsym $mod+d exec rofi -show drun
 bindsym $mod+v exec rofi -show window
@@ -51,10 +54,10 @@ bindsym $mod+minus scratchpad show
 bindsym $mod+Shift+w sticky toggle
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+h focus right
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+h focus left
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -63,10 +66,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+h move right
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+h move left
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -188,7 +191,8 @@ for_window [class="Plasmoidviewer"] floating enable; border none
 for_window [class="(?i)*nextcloud*"] floating disable
 for_window [class="plasmashell" window_type="notification"] floating enable, border none, move right 700px, move down 450px
 no_focus [class="plasmashell" window_type="notification"]
-for_window [class="^Android"] floating enable; border none
+for_window [class="Android"] floating enable; border none
+for_window [class="android"] floating enable; border none
 
 # class                 border  bground text    indicator child_border
 client.focused          #7E4827 #7E4827 #7E4827 #7E4827   #7E4827
