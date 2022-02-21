@@ -28,3 +28,5 @@ export ANDROID_SDK=/home/abdiel/Android/Sdk
 fish_add_path /var/lib/snapd/snap/bin/
 fish_add_path ~/.emacs.d/bin/
 fish_add_path /snap/bin/
+fish_add_path ~/.dvm/bin
+fish_add_path ~/.deno/bin

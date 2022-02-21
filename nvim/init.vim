@@ -30,7 +30,6 @@ set nopaste
 set autochdir
 set noshowmode
 set sessionoptions+=tabpages,globals
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 set signcolumn=no
 set ttyfast
 set noexpandtab
@@ -38,44 +37,37 @@ set clipboard=unnamedplus
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'rendon/vim-rooter'
+Plug 'neovim/nvim-lspconfig'
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'ray-x/lsp_signature.nvim'
+
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'szw/vim-maximizer'
 Plug 'muellan/vim-toggle-ui-elements'
-Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'morhetz/gruvbox'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+Plug 'tommcdo/vim-exchange'
+Plug 'rhysd/clever-f.vim'
+Plug 'rendon/vim-rooter'
 Plug 'alvan/vim-closetag'
-Plug 'doums/darcula'
-Plug 'itchyny/lightline.vim'
-Plug 'sainnhe/gruvbox-material'
-Plug '907th/vim-auto-save'
-Plug 'preservim/nerdcommenter'
-Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
-hi! link CocErrorSign ErrorSign
-hi! link CocWarningSign WarningSign
-hi! link CocInfoSign InfoSign
-hi! link CocHintSign HintSign
-hi! link CocErrorFloat Pmenu
-hi! link CocWarningFloat Pmenu
-hi! link CocInfoFloat Pmenu
-hi! link CocHintFloat Pmenu
-hi! link CocHighlightText IdentifierUnderCaret
-hi! link CocHighlightRead IdentifierUnderCaret
-hi! link CocHighlightWrite IdentifierUnderCaretWrite
-hi! link CocErrorHighlight CodeError
-hi! link CocWarningHighlight CodeWarning
-hi! link CocInfoHighlight CodeInfo
-hi! link CocHintHighlight CodeHint
 highlight MatchParen cterm=underline ctermbg=black ctermfg=NONE
 highlight MatchParen gui=underline guibg=black guifg=NONE
 
@@ -83,13 +75,15 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.tsx'
 let g:indentLine_setColors = 0
 let g:indentLine_faster = 1
 let g:indentLine_setColors = 1
-let g:lightline = { 'colorscheme': 'gruvbox_material' }
-let g:coc_disable_transparent_cursor = 1
+let g:lightline = { 'colorscheme': 'gruvbox' }
 let g:auto_save = 0
 
 let g:gruvbox_material_enable_italic = 0
 let g:gruvbox_material_disable_italic_comment = 1
 let g:gruvbox_material_background = 'soft'
+let g:gruvbox_contrast_dark = 'soft'
+let g:gruvbox_bold = 0
+let g:gruvbox_italic = 0
 
 " Fugitive
 nmap <leader>gh :diffget //3<CR>
@@ -110,14 +104,9 @@ augroup highlight_yank
     autocmd!
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
 augroup END
-augroup mygroup
-  autocmd!
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
 autocmd BufWritePre * :call TrimWhitespace()
 autocmd BufWritePre * let &bex = '@' . strftime("%F.%H:%M")
-autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd FileType defx call s:defx_my_settings()
 let loaded_matchparen = 1
 let mapleader = " "
 function! s:check_back_space() abort
@@ -129,24 +118,13 @@ fun! GotoWindow(id)
     call win_gotoid(a:id)
     MaximizerToggle
 endfun
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-command! -nargs=0 Format :call CocAction('format')
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
+lua require('lsp-config')
 
-colorscheme gruvbox-material
+colorscheme gruvbox
 set background=dark
 
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
@@ -158,13 +136,13 @@ nnoremap <leader>q <cmd>close<CR>
 nnoremap <leader>w <cmd>w<CR>
 nmap <leader>ss :split<Return><C-w>w
 nmap <leader>sv :vsplit<Return><C-w>w
-nnoremap <leader>pv <cmd>CocCommand explorer<CR>
 nnoremap <leader>pf <cmd>Files src<CR>
 nnoremap <leader>pg <cmd>GFiles<CR>
 nnoremap <leader>ps <cmd>Files<CR>
 nnoremap <leader>pb <cmd>Buffers<CR>
-nnoremap <leader>ff <cmd>call CocAction('format')<CR>
+nnoremap <leader>pv <cmd>Defx -winwidth=40 -split=vertical -toggle<CR>
 nnoremap <leader>pcc :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>pcl :e ~/.config/nvim/lua/lsp-config.lua<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 vnoremap J :m '>+1<CR>gv=gv
@@ -184,39 +162,68 @@ nmap <leader>y <Plug>yankstack_substitute_older_paste
 nmap <leader>Y <Plug>yankstack_substitute_newer_paste
 nnoremap <leader>m :MaximizerToggle!<CR>
 
-nmap <leader>gh :call <SID>show_documentation()<CR>
-xmap <leader>gsa  <Plug>(coc-codeaction-selected)
-nmap <leader>gsa  <Plug>(coc-codeaction-selected)
-nmap <leader>ga  <Plug>(coc-codeaction)
-xmap <leader>gcs <Plug>(coc-convert-snippet)
-nmap <leader>gor :CocCommand tsserver.organizeImports<Return><CR>
-nmap <silent> <leader>gn <Plug>(coc-diagnostic-previous)
-nmap <silent> <leader>gp <Plug>(coc-diagnostic-next)
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gy <Plug>(coc-type-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gr <Plug>(coc-references)
-xmap <leader>gf  <Plug>(coc-format-selected)
-nmap <leader>gf  <Plug>(coc-format-selected)
-nmap <leader>cf  <Plug>(coc-fix-current)
-nmap <silent> <leader>rs <Plug>(coc-range-select)
-xmap <silent> <leader>rs <Plug>(coc-range-select)
-nmap <leader>rr <Plug>(coc-rename)
-inoremap <silent><expr> <c-space> coc#refresh()
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+function! s:defx_my_settings() abort
+    nnoremap <silent><buffer><expr> <CR>
+                \ defx#do_action('drop')
+    nnoremap <silent><buffer><expr> c
+                \ defx#do_action('copy')
+    nnoremap <silent><buffer><expr> m
+                \ defx#do_action('move')
+    nnoremap <silent><buffer><expr> p
+                \ defx#do_action('paste')
+    nnoremap <silent><buffer><expr> l
+                \ defx#do_action('drop')
+    nnoremap <silent><buffer><expr> e
+                \ defx#do_action('open', 'vsplit')
+    nnoremap <silent><buffer><expr> p
+                \ defx#do_action('preview')
+    nnoremap <silent><buffer><expr> o
+                \ defx#do_action('open_tree', 'toggle')
+    nnoremap <silent><buffer><expr> N
+                \ defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr> n
+                \ defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> M
+                \ defx#do_action('new_multiple_files')
+    nnoremap <silent><buffer><expr> C
+                \ defx#do_action('toggle_columns',
+                \                'mark:indent:icon:filename:type:size:time')
+    nnoremap <silent><buffer><expr> S
+                \ defx#do_action('toggle_sort', 'time')
+    nnoremap <silent><buffer><expr> d
+                \ defx#do_action('remove')
+    nnoremap <silent><buffer><expr> r
+                \ defx#do_action('rename')
+    nnoremap <silent><buffer><expr> !
+                \ defx#do_action('execute_command')
+    nnoremap <silent><buffer><expr> x
+                \ defx#do_action('execute_system')
+    nnoremap <silent><buffer><expr> yy
+                \ defx#do_action('yank_path')
+    nnoremap <silent><buffer><expr> .
+                \ defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> ;
+                \ defx#do_action('repeat')
+    nnoremap <silent><buffer><expr> h
+                \ defx#do_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> ~
+                \ defx#do_action('cd')
+    nnoremap <silent><buffer><expr> q
+                \ defx#do_action('quit')
+    nnoremap <silent><buffer><expr> <Space>
+                \ defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> *
+                \ defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> j
+                \ line('.') == line('$') ? 'gg' : 'j'
+    nnoremap <silent><buffer><expr> k
+                \ line('.') == 1 ? 'G' : 'k'
+    nnoremap <silent><buffer><expr> <C-l>
+                \ defx#do_action('redraw')
+    nnoremap <silent><buffer><expr> <C-g>
+                \ defx#do_action('print')
+    nnoremap <silent><buffer><expr> cd
+                \ defx#do_action('change_vim_cwd')
+endfunction
 
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
-
+hi Normal guibg=NONE ctermbg=NONE

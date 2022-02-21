@@ -53,6 +53,7 @@ WINDOW_ICONS = {
     'atom': fa.icons['code'],
     'banshee': fa.icons['play'],
     'blender': fa.icons['cube'],
+    'brave-browser': fa.icons['chrome'],
     'chromium': fa.icons['chrome'],
     'google-chrome': fa.icons['chrome'],
     'chrome': fa.icons['chrome'],

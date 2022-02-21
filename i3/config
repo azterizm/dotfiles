@@ -47,6 +47,7 @@ bindsym $mod+Shift+p exec ~/.config/i3status/autoname_workspaces.py
 # menu
 bindsym $mod+d exec rofi -show drun
 bindsym $mod+v exec rofi -show window
+bindsym $mod+x exec rofi -show run
 
 # window persist
 bindsym $mod+Shift+minus move scratchpad
@@ -102,7 +103,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+c focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -193,6 +194,7 @@ for_window [class="plasmashell" window_type="notification"] floating enable, bor
 no_focus [class="plasmashell" window_type="notification"]
 for_window [class="Android"] floating enable; border none
 for_window [class="android"] floating enable; border none
+for_window [class="Chromium"] move to workspace $ws10
 
 # class                 border  bground text    indicator child_border
 client.focused          #7E4827 #7E4827 #7E4827 #7E4827   #7E4827
@@ -212,7 +214,7 @@ bar {
     focused_workspace  #2B2B2B #7E4827 #AFB1B3
     active_workspace   #2B2B2B #313335 #7C838A
     inactive_workspace #2B2B2B #313335 #7C838A
-    urgent_workspace   #2B2B2B #C96A2E #2B2B2B
+    urgent_workspace   #2B2B2B #313335 #7C838A
     binding_mode       #2B2B2B #313335 #7C838A
   }
 
@@ -226,3 +228,4 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id nitrogen --restore &
 exec --no-startup-id ~/.config/i3status/autoname_workspaces.py
+exec --no-startup-id picom
