@@ -20,7 +20,6 @@ alias ls='exa --color=auto'
 alias z='zoxide'
 alias emulator='~/Android/Sdk/emulator/emulator'
 
-fnm env | source
 zoxide init fish | source
 set -x DENO_INSTALL /Users/YOUR_USER/.deno
 set -x PATH $DENO_INSTALL/bin:$PATH
@@ -30,3 +29,5 @@ fish_add_path ~/.emacs.d/bin/
 fish_add_path /snap/bin/
 fish_add_path ~/.dvm/bin
 fish_add_path ~/.deno/bin
+fish_add_path ~/Standalone_Apps/heroku/bin
+fish_add_path ~/.deta/bin
