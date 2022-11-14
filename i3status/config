@@ -82,6 +82,6 @@ volume master {
 
 
 memory {
-    format = "MEM: %used"
-    threshold_degraded = "10%"
+        format = "MEM: %used"
+        threshold_degraded = "10%"
 }

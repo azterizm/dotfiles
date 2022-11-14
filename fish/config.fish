@@ -30,4 +30,6 @@ fish_add_path /snap/bin/
 fish_add_path ~/.dvm/bin
 fish_add_path ~/.deno/bin
 fish_add_path ~/Standalone_Apps/heroku/bin
+fish_add_path ~/Standalone_Apps/
 fish_add_path ~/.deta/bin
+fish_add_path ~/lua-language-server/bin
