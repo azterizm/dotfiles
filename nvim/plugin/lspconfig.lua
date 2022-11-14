@@ -17,6 +17,15 @@ local enable_format_on_save = function(_, bufnr)
   })
 end
 
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = ""
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(_, bufnr)
@@ -71,7 +80,13 @@ nvim_lsp.tsserver.setup {
   on_attach = on_attach,
   filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
   cmd = { "typescript-language-server", "--stdio" },
-  capabilities = capabilities
+  capabilities = capabilities,
+  commands = {
+    OR = {
+      organize_imports,
+      description = 'Organize Imports'
+    }
+  }
 }
 
 nvim_lsp.sumneko_lua.setup {
@@ -98,7 +113,8 @@ nvim_lsp.sumneko_lua.setup {
 
 nvim_lsp.tailwindcss.setup {
   on_attach = on_attach,
-  capabilities = capabilities
+  capabilities = capabilities,
+  root_dir = nvim_lsp.util.root_pattern('package.json', 'node_modules', '.git', 'vite.config.ts')
 }
 
 nvim_lsp.cssls.setup {
