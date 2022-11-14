@@ -17,6 +17,7 @@ packer.startup(function(use)
   use 'hrsh7th/nvim-cmp' -- Completion
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
   use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
+  use 'MunifTanjim/prettier.nvim'
   use 'glepnir/lspsaga.nvim' -- LSP UIs
   use 'L3MON4D3/LuaSnip'
   use {
