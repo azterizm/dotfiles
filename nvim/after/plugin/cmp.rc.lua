@@ -23,15 +23,15 @@ cmp.setup({
     }),
     ['<C-n>'] = cmp.mapping(
       function(fallback)
-        cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+        cmp_ultisnips_mappings.compose { 'jump_forwards', 'select_next_item' } (fallback)
       end,
-      { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+      { "i", "s" }
     ),
     ['<C-p>'] = cmp.mapping(
       function(fallback)
         cmp_ultisnips_mappings.jump_backwards(fallback)
       end,
-      { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+      { "i", "s" }
     ),
   }),
   sources = cmp.config.sources({
