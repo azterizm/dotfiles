@@ -58,7 +58,7 @@ end)
 vim.keymap.set('n', '<leader>ge', function()
   builtin.diagnostics()
 end)
-vim.keymap.set("n", "<leader>gf", function()
+vim.keymap.set("n", "<leader>pv", function()
   telescope.extensions.file_browser.file_browser({
     path = "%:p:h",
     cwd = telescope_buffer_dir(),

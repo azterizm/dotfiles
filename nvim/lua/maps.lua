@@ -23,3 +23,7 @@ keymap.set('n', '<leader>l', '<C-w>l')
 -- Resize window
 keymap.set('n', '<leader>+', '<C-w><')
 keymap.set('n', '<leader>-', '<C-w>>')
+
+-- Buffer
+keymap.set('n', '<C-n>', '<cmd>bnext<CR>')
+keymap.set('n', '<C-p>', '<cmd>bprevious<CR>')

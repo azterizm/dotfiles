@@ -42,6 +42,8 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', '<leader>gc', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', '<leader>gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', '<leader>gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<leader>sh', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<leader>ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', '<leader>gh', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
 end
 
@@ -114,7 +116,6 @@ nvim_lsp.sumneko_lua.setup {
 nvim_lsp.tailwindcss.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = nvim_lsp.util.root_pattern('package.json', 'node_modules', '.git', 'vite.config.ts')
 }
 
 nvim_lsp.cssls.setup {
@@ -125,6 +126,18 @@ nvim_lsp.cssls.setup {
 nvim_lsp.astro.setup {
   on_attach = on_attach,
   capabilities = capabilities
+}
+
+nvim_lsp.emmet_ls.setup {
+  capabilities = capabilities,
+  filetypes = { 'html', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
+  init_options = {
+    html = {
+      options = {
+        ["bem.enabled"] = true,
+      },
+    },
+  }
 }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(

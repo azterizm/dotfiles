@@ -19,7 +19,7 @@ gaps inner 1
 gaps left 30
 gaps right 31
 gaps bottom 15
-gaps top 40
+gaps top 39
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -51,8 +51,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+p exec ~/.config/i3status/autoname_workspaces.py
 
 # menu
-bindsym $mod+d exec ulauncher
-bindsym $mod+v exec rofi -show window
+bindsym $mod+slash exec ulauncher
 
 # window persist
 bindsym $mod+Shift+minus move scratchpad
