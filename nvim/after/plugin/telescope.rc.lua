@@ -49,7 +49,7 @@ vim.keymap.set('n', '<leader>pf',
       hidden = true
     })
   end)
-vim.keymap.set('n', '<leader>gr', function()
+vim.keymap.set('n', '<leader>gl', function()
   builtin.live_grep()
 end)
 vim.keymap.set('n', '<leader>gb', function()

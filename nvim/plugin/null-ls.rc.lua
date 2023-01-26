@@ -1,5 +1,4 @@
-local status, null_ls = pcall(require, "null-ls")
-if (not status) then return end
+local null_ls = require("null-ls")
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
@@ -12,12 +11,13 @@ local lsp_formatting = function(bufnr)
   })
 end
 
-null_ls.setup {
+
+---@diagnostic disable-next-line: redundant-parameter
+null_ls.setup({
   sources = {
-    null_ls.builtins.formatting.prettierd.with({
+    null_ls.builtins.formatting.prettier.with({
       extra_args = { '--no-semi', '--single-quote', '--jsx-single-quote', '--print-width 80', '--trailing-comma all' }
     }),
-    null_ls.builtins.diagnostics.fish
   },
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then
@@ -31,7 +31,8 @@ null_ls.setup {
       })
     end
   end
-}
+
+})
 
 vim.api.nvim_create_user_command(
   'DisableLspFormatting',

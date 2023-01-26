@@ -33,4 +33,4 @@ SETUVAR fish_pager_color_description:B3A06D\x1eyellow
 SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
-SETUVAR fish_user_paths:/home/abdiel/lua\x2dlanguage\x2dserver/bin\x1e/home/abdiel/Standalone_Apps\x1e/home/abdiel/\x2edeta/bin\x1e/home/abdiel/Standalone_Apps/heroku/bin\x1e/home/abdiel/\x2edeno/bin\x1e/home/abdiel/\x2edvm/bin\x1e/home/abdiel/\x2eemacs\x2ed/bin\x1e/home/abdiel/\x2elocal/bin\x1e/var/lib/snapd/snap/bin\x1e/home/abdiel/Android/Sdk\x1e/home/abdiel/\x2edeno\x1e/snap/bin\x1e/home/abdiel/\x2eyarn/bin\x1eyarn\x1eglobal\x1ebin
+SETUVAR fish_user_paths:/home/abdiel/\x2elocal/share/pnpm\x1e/home/abdiel/lua\x2dlanguage\x2dserver/bin\x1e/home/abdiel/Standalone_Apps\x1e/home/abdiel/\x2edeta/bin\x1e/home/abdiel/Standalone_Apps/heroku/bin\x1e/home/abdiel/\x2edeno/bin\x1e/home/abdiel/\x2edvm/bin\x1e/home/abdiel/\x2eemacs\x2ed/bin\x1e/home/abdiel/\x2elocal/bin\x1e/var/lib/snapd/snap/bin\x1e/home/abdiel/Android/Sdk\x1e/home/abdiel/\x2edeno\x1e/snap/bin\x1e/home/abdiel/\x2eyarn/bin\x1eyarn\x1eglobal\x1ebin

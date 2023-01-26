@@ -1,0 +1,229 @@
+snippet imr "Import React"
+import * as React from 'react';
+
+endsnippet
+
+snippet imrc "Import React, { Component }"
+import * as React from 'react';
+import { Component } from 'react';
+
+endsnippet
+
+snippet imrd "Import ReactDOM"
+import ReactDOM from 'react-dom';
+endsnippet
+
+snippet imrs "Import React, { useState }"
+import * as React from 'react';
+import { useState } from 'react';
+
+endsnippet
+
+snippet imrse "Import React, { useState, useEffect }"
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+
+endsnippet
+
+snippet impc "Import React, { PureComponent }"
+import React, { PureComponent } from 'react';
+
+endsnippet
+
+snippet cc "Class Component"
+interface $1Props {
+	$2
+}
+ 
+interface $1State {
+	$3
+}
+ 
+class $1 extends React.Component<$1Props, $1State> {
+	state = { $4: $5 }
+	render() { 
+		return ( $0 );
+	}
+}
+ 
+export default $1;
+endsnippet
+
+snippet cpc "Class Pure Component"
+export interface $1Props {
+	$2
+}
+ 
+export interface $1State {
+	$3
+}
+ 
+class $1 extends React.PureComponent<$1Props, $1State> {
+	state = { $4: $5 }
+	render() { 
+		return ( $0 );
+	}
+}
+ 
+export default $1;
+endsnippet
+
+snippet ccc "Class Component with Constructor"
+interface $1Props {
+	$2
+}
+ 
+interface $1State {
+	$3
+}
+ 
+class $1 extends React.Component<$1Props, $1State> {
+	constructor(props: $1Props) {
+		super(props);
+		this.state = { $4: $5 };
+	}
+	render() { 
+		return ( $0 );
+	}
+}
+ 
+export default $1;
+endsnippet
+
+snippet fc "Function Component"
+interface $1Props {
+	$2
+}
+ 
+const $1: FunctionComponent<$1Props> = ($3) => {
+	return ( $0 );
+}
+ 
+export default $1;
+endsnippet
+
+snippet ffc "Function Syntax Component"
+function $1($2) {
+	return ( $0 );
+}
+
+export default $1;
+endsnippet
+
+snippet sfc "Stateless Function Component"
+const $1 = ($2) => {
+	return ( $0 );
+}
+ 
+export default $1;
+endsnippet
+
+snippet cdm "componentDidMount"
+componentDidMount() {
+	$0
+}
+endsnippet
+
+snippet uef "useEffect Hook"
+useEffect(() => {
+	$1
+}, []);
+endsnippet
+
+snippet cwm "componentWillMount"
+//WARNING! To be deprecated in React v17. Use componentDidMount instead.
+componentWillMount() {
+	$0
+}
+endsnippet
+
+snippet cwrp "componentWillReceiveProps"
+//WARNING! To be deprecated in React v17. Use new lifecycle static getDerivedStateFromProps instead.
+componentWillReceiveProps(nextProps: $1Props) {
+	$0
+}
+endsnippet
+
+snippet gds "getDerivedStateFromProps"
+static getDerivedStateFromProps(nextProps: $1Props, prevState: $1State) {
+	$0
+}
+endsnippet
+
+snippet scu "shouldComponentUpdate"
+shouldComponentUpdate(nextProps: $1Props, nextState: $1State) {
+	$0
+}
+endsnippet
+
+snippet cwu "componentWillUpdate"
+//WARNING! To be deprecated in React v17. Use componentDidUpdate instead.
+componentWillUpdate(nextProps: $1Props, nextState: $1State) {
+	$0
+}
+endsnippet
+
+snippet cdu "componentDidUpdate"
+componentDidUpdate(prevProps: $1Props, prevState: $1State) {
+	$0
+}
+endsnippet
+
+snippet cwun "componentWillUnmount"
+componentWillUnmount() {
+	$0
+}
+endsnippet
+
+snippet cdc "componentDidCatch"
+componentDidCatch(error, info) {
+	$0
+}
+endsnippet
+
+snippet gsbu "getSnapshotBeforeUpdate"
+getSnapshotBeforeUpdate(prevProps: $1Props, prevState: $1State) {
+	$0
+}
+endsnippet
+
+snippet ss "setState"
+this.setState({ $1: $2 });
+endsnippet
+
+snippet ssf "Functional setState"
+this.setState(prevState => {
+	return { $1: prevState.$1 };
+});
+endsnippet
+
+snippet usf "Declare a new state Variable using the State Hook. Hit Tab to apply CamelCase to function"
+const [${1}, set${1/(.*)/${1:/capitalize}/}] = useState($2);
+endsnippet
+
+snippet ren "render"
+render() {
+	return (
+		 $0
+	);
+}
+endsnippet
+
+snippet rprop "Render Prop"
+interface $1Props {
+	render: (state: $1State) => JSX.Element
+}
+ 
+interface $1State {
+	$2
+}
+ 
+class $1 extends React.Component<$1Props, $1State> {
+	state = { $3: $4 }
+	render() { 
+		return this.props.render(this.state);
+	}
+}
+ 
+export default $1;
+endsnippet
