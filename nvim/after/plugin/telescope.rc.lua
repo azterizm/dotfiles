@@ -16,6 +16,10 @@ telescope.setup {
         ["q"] = actions.close
       },
     },
+    file_ignore_patterns = { 
+      "node_modules" ,
+    '.git'
+    }
   },
   extensions = {
     file_browser = {
@@ -38,6 +42,10 @@ telescope.setup {
       },
     },
   },
+  file_ignore_patterns = { 
+    "node_modules" ,
+    '.git'
+  }
 }
 
 telescope.load_extension("file_browser")

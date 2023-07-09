@@ -24,10 +24,11 @@ packer.startup(function(use)
   use 'norcalli/nvim-colorizer.lua'
   use 'nvim-lua/plenary.nvim' -- Common utilities
   use 'lukas-reineke/indent-blankline.nvim'
-  use 'wuelnerdotexe/vim-astro'
   use "hrsh7th/nvim-cmp"
   use "quangnguyen30192/cmp-nvim-ultisnips"
   use 'SirVer/ultisnips'
   use 'terrortylor/nvim-comment'
   use {'neoclide/coc.nvim', branch = 'release'}
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'BurntSushi/ripgrep'
 end)

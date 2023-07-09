@@ -1,9 +1,10 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR __fish_initialized:3400
-SETUVAR _fisher_jorgebucaran_2F_fisher_files:/home/abdiel/\x2econfig/fish/functions/fisher\x2efish\x1e/home/abdiel/\x2econfig/fish/completions/fisher\x2efish
-SETUVAR _fisher_joseluisq_2F_gitnow_files:/home/abdiel/\x2econfig/fish/functions/__gitnow_config_file\x2efish\x1e/home/abdiel/\x2econfig/fish/functions/__gitnow_functions\x2efish\x1e/home/abdiel/\x2econfig/fish/functions/__gitnow_manual\x2efish\x1e/home/abdiel/\x2econfig/fish/conf\x2ed/gitnow\x2efish\x1e/home/abdiel/\x2econfig/fish/conf\x2ed/gitnow_config\x2efish\x1e/home/abdiel/\x2econfig/fish/completions/__gitnow_completions\x2efish
+SETUVAR _fisher_jorgebucaran_2F_fisher_files:\x7e/\x2econfig/fish/functions/fisher\x2efish\x1e\x7e/\x2econfig/fish/completions/fisher\x2efish
+SETUVAR _fisher_joseluisq_2F_gitnow_files:\x7e/\x2econfig/fish/functions/__gitnow_config_file\x2efish\x1e\x7e/\x2econfig/fish/functions/__gitnow_functions\x2efish\x1e\x7e/\x2econfig/fish/functions/__gitnow_manual\x2efish\x1e\x7e/\x2econfig/fish/conf\x2ed/gitnow\x2efish\x1e\x7e/\x2econfig/fish/conf\x2ed/gitnow_config\x2efish\x1e\x7e/\x2econfig/fish/completions/__gitnow_completions\x2efish
 SETUVAR _fisher_plugins:jorgebucaran/fisher\x1ejoseluisq/gitnow
+SETUVAR _fisher_upgraded_to_4_4:\x1d
 SETUVAR fish_color_autosuggestion:747369
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:99cc99
@@ -33,4 +34,4 @@ SETUVAR fish_pager_color_description:B3A06D\x1eyellow
 SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
-SETUVAR fish_user_paths:/home/abdiel/\x2elocal/share/pnpm\x1e/home/abdiel/lua\x2dlanguage\x2dserver/bin\x1e/home/abdiel/Standalone_Apps\x1e/home/abdiel/\x2edeta/bin\x1e/home/abdiel/Standalone_Apps/heroku/bin\x1e/home/abdiel/\x2edeno/bin\x1e/home/abdiel/\x2edvm/bin\x1e/home/abdiel/\x2eemacs\x2ed/bin\x1e/home/abdiel/\x2elocal/bin\x1e/var/lib/snapd/snap/bin\x1e/home/abdiel/Android/Sdk\x1e/home/abdiel/\x2edeno\x1e/snap/bin\x1e/home/abdiel/\x2eyarn/bin\x1eyarn\x1eglobal\x1ebin
+SETUVAR fish_user_paths:/home/abdiel/\x2envim/bin\x1e/home/abdiel/\x2ehelix\x1e/home/abdiel/\x2enpm\x2dglobal/bin\x1e/home/abdiel/\x2elocal/share/pnpm\x1e/home/abdiel/lua\x2dlanguage\x2dserver/bin\x1e/home/abdiel/Standalone_Apps\x1e/home/abdiel/\x2edeta/bin\x1e/home/abdiel/Standalone_Apps/heroku/bin\x1e/home/abdiel/\x2edeno/bin\x1e/home/abdiel/\x2edvm/bin\x1e/home/abdiel/\x2eemacs\x2ed/bin\x1e/home/abdiel/\x2elocal/bin\x1e/var/lib/snapd/snap/bin\x1e/home/abdiel/Android/Sdk\x1e/home/abdiel/\x2edeno\x1e/snap/bin\x1e/home/abdiel/\x2eyarn/bin\x1eyarn\x1eglobal\x1ebin

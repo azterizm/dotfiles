@@ -22,10 +22,12 @@ alias emulator='~/Android/Sdk/emulator/emulator'
 alias image='nsxiv'
 
 zoxide init fish | source
-set -x DENO_INSTALL /Users/YOUR_USER/.deno
-set -x PATH $DENO_INSTALL/bin:$PATH
+set -x DENO_INSTALL "/home/abdiel/.deno"
+set -x PATH "$DENO_INSTALL/bin:$PATH"
 export ANDROID_SDK=/home/abdiel/Android/Sdk
 export GTK_USE_PORTAL=0
+export NODE_OPTIONS=--max_old_space_size=4096
+
 fish_add_path /var/lib/snapd/snap/bin/
 fish_add_path ~/.emacs.d/bin/
 fish_add_path /snap/bin/
@@ -36,11 +38,6 @@ fish_add_path ~/Standalone_Apps/
 fish_add_path ~/.deta/bin
 fish_add_path ~/lua-language-server/bin
 fish_add_path ~/.local/share/pnpm/
+fish_add_path ~/.npm-global/bin
+fish_add_path ~/.nvim/bin
 
-bash ~/scripts/sway-startup.sh
-
-
-# pnpm
-set -gx PNPM_HOME "/home/abdiel/.local/share/pnpm"
-set -gx PATH "$PNPM_HOME" $PATH
-# pnpm end
