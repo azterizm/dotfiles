@@ -17,7 +17,15 @@ packer.startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
   }
-  use 'nvim-telescope/telescope.nvim'
+  use {
+    "nvim-telescope/telescope.nvim",
+    requires = {
+      { "nvim-telescope/telescope-live-grep-args.nvim" },
+    },
+    config = function()
+      require("telescope").load_extension("live_grep_args")
+    end
+  }
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-ts-autotag'
   use 'windwp/nvim-autopairs'
@@ -30,5 +38,5 @@ packer.startup(function(use)
   use 'terrortylor/nvim-comment'
   use {'neoclide/coc.nvim', branch = 'release'}
   use 'hrsh7th/cmp-nvim-lsp'
-  use 'BurntSushi/ripgrep'
+  use { 'codota/tabnine-nvim', run = "./dl_binaries.sh" }
 end)

@@ -1,14 +1,10 @@
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local status, nvim_lsp = pcall(require, "lspconfig")
 if (not status) then return end
-
-
 local protocol = require('vim.lsp.protocol')
-
 local nvim_comment = require('nvim_comment')
-
 local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
-
+local tabnine = require('cmp_tabnine.config')
 
 local function organize_imports()
   local params = {
@@ -149,3 +145,4 @@ vim.diagnostic.config({
     source = "always", -- Or "if_many"
   },
 })
+
