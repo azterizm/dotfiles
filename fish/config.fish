@@ -12,6 +12,16 @@ function push_all
   command git add . && git commit -m $argv && git push
 end
 
+function develop-select
+  command bash /home/abdiel/scripts/zellij/list-sessions.sh
+end
+function develop-last
+  command bash /home/abdiel/scripts/zellij/attach-last-session.sh
+end
+function develop-new
+  command zellij
+end
+
 alias vim='nvim'
 alias l='exa'
 alias la='exa -a'
@@ -27,6 +37,11 @@ set -x PATH "$DENO_INSTALL/bin:$PATH"
 export ANDROID_SDK=/home/abdiel/Android/Sdk
 export GTK_USE_PORTAL=0
 export NODE_OPTIONS=--max_old_space_size=4096
+export N_PREFIX=$HOME/.n
+export NEXTCLOUD_DATADIR="/mnt/large/nextcloud"
+export FLYCTL_INSTALL="/home/abdiel/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
 
 fish_add_path /var/lib/snapd/snap/bin/
 fish_add_path ~/.emacs.d/bin/
@@ -40,4 +55,14 @@ fish_add_path ~/lua-language-server/bin
 fish_add_path ~/.local/share/pnpm/
 fish_add_path ~/.npm-global/bin
 fish_add_path ~/.nvim/bin
+fish_add_path ~/.bun/bin
+fish_add_path ~/.n/bin
+fish_add_path /usr/local/go/bin
+fish_add_path ~/go/bin
+fish_add_path ~/zellij/
+fish_add_path ~/skim/bin
 
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
