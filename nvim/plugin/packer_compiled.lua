@@ -130,6 +130,12 @@ _G.packer_plugins = {
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
+  ["mini.nvim"] = {
+    config = { "\27LJ\2\n¡\3\0\0\a\0\16\0\0216\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\14\0005\4\4\0005\5\3\0=\5\5\0045\5\6\0=\5\a\0045\5\b\0=\5\t\0045\5\n\0=\5\v\0049\5\f\0009\5\r\5B\5\1\2=\5\r\4=\4\15\3B\1\2\1K\0\1\0\17highlighters\1\0\0\14hex_color\20gen_highlighter\tnote\1\0\2\fpattern\25%f[%w]()NOTE()%f[%W]\ngroup\23MiniHipatternsNote\ttodo\1\0\2\fpattern\25%f[%w]()TODO()%f[%W]\ngroup\23MiniHipatternsTodo\thack\1\0\2\fpattern\25%f[%w]()HACK()%f[%W]\ngroup\23MiniHipatternsHack\nfixme\1\0\0\1\0\2\fpattern\26%f[%w]()FIXME()%f[%W]\ngroup\24MiniHipatternsFixme\nsetup\20mini.hipatterns\frequire\0" },
+    loaded = true,
+    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/mini.nvim",
+    url = "https://github.com/echasnovski/mini.nvim"
+  },
   ["nvim-autopairs"] = {
     config = { "\27LJ\2\n@\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\19nvim-autopairs\frequire\0" },
     loaded = false,
@@ -152,6 +158,12 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
+  ["outline.nvim"] = {
+    config = { "\27LJ\2\nœ\1\0\0\6\0\n\0\0156\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\0016\0\a\0'\2\b\0B\0\2\0029\0\t\0004\2\0\0B\0\2\1K\0\1\0\nsetup\foutline\frequire\1\0\1\tdesc\19Toggle Outline\21<cmd>Outline<CR>\14<leader>o\6n\bset\vkeymap\bvim\0" },
+    loaded = true,
+    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/outline.nvim",
+    url = "https://github.com/hedyhli/outline.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -176,6 +188,14 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: outline.nvim
+time([[Config for outline.nvim]], true)
+try_loadstring("\27LJ\2\nœ\1\0\0\6\0\n\0\0156\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\0016\0\a\0'\2\b\0B\0\2\0029\0\t\0004\2\0\0B\0\2\1K\0\1\0\nsetup\foutline\frequire\1\0\1\tdesc\19Toggle Outline\21<cmd>Outline<CR>\14<leader>o\6n\bset\vkeymap\bvim\0", "config", "outline.nvim")
+time([[Config for outline.nvim]], false)
+-- Config for: mini.nvim
+time([[Config for mini.nvim]], true)
+try_loadstring("\27LJ\2\n¡\3\0\0\a\0\16\0\0216\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\14\0005\4\4\0005\5\3\0=\5\5\0045\5\6\0=\5\a\0045\5\b\0=\5\t\0045\5\n\0=\5\v\0049\5\f\0009\5\r\5B\5\1\2=\5\r\4=\4\15\3B\1\2\1K\0\1\0\17highlighters\1\0\0\14hex_color\20gen_highlighter\tnote\1\0\2\fpattern\25%f[%w]()NOTE()%f[%W]\ngroup\23MiniHipatternsNote\ttodo\1\0\2\fpattern\25%f[%w]()TODO()%f[%W]\ngroup\23MiniHipatternsTodo\thack\1\0\2\fpattern\25%f[%w]()HACK()%f[%W]\ngroup\23MiniHipatternsHack\nfixme\1\0\0\1\0\2\fpattern\26%f[%w]()FIXME()%f[%W]\ngroup\24MiniHipatternsFixme\nsetup\20mini.hipatterns\frequire\0", "config", "mini.nvim")
+time([[Config for mini.nvim]], false)
 -- Config for: gruvbox-material
 time([[Config for gruvbox-material]], true)
 try_loadstring("\27LJ\2\n©\1\0\0\3\0\a\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0)\1\1\0=\1\4\0006\0\0\0009\0\5\0'\2\6\0B\0\2\1K\0\1\0!colorscheme gruvbox-material\bcmd(gruvbox_material_better_performance\vmedium gruvbox_material_background\6g\bvim\0", "config", "gruvbox-material")

@@ -90,14 +90,8 @@
   "Import common": {
     "prefix": "rr:imp:common",
     "body": [
-      "import {",
-      "  Link,",
-      "  Form,",
-      "  useLoaderData,",
-      "  useActionData,",
-      "  json,",
-      "  redirect,",
-      "} from 'remix'",
+      "import { Link, Form, json, redirect, ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'",
+      "import { useLoaderData, useActionData } from '@remix-run/react'",
       "$1"
     ],
     "description": "Import common Remix helpers, components and hooks"
@@ -108,7 +102,7 @@
       "import type {",
       "  ActionFunction,",
       "  LoaderFunction,",
-      "} from 'remix'",
+      "} from '@remix-run/react'",
       "$1"
     ],
     "description": "Import type definitions of conventional functions."
@@ -146,6 +140,31 @@
       "})"
     ],
     "description": "Use the json helper to return JSON with status and/or headers from the route's loader"
+  },
+  "Return Buffer from loader": {
+    "prefix": "rr:loader:buffer",
+    "body": [
+      "return new Response(buffer, {",
+      " headers: {",
+      "   'Content-Type': $1.fileType || 'application/octet-stream',",
+      "   'Content-Disposition': 'inline filename=\"' + $1.fileName + '\"',",
+      "   'Content-Length': $1.fileSize.toString() || buffer.byteLength.toString(),",
+      " },",
+      "})"
+    ],
+    "description": "Use the buffer helper to return Buffer with status and/or headers from the route's loader"
+  },
+  "Read file from uploads folder": {
+    "prefix": "rr:read:uploads",
+    "body": [
+      "const buffer = await fs.readFile(",
+      "  path.resolve(",
+      "    'uploads',",
+      "    $1,",
+      "  ),",
+      ")"
+    ],
+    "description": "Read file from uploads folder"
   },
   "Define LoaderData type": {
     "prefix": "rr:type:LoaderData",
