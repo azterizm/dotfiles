@@ -13,7 +13,11 @@ return require('packer').startup(function(use)
     config = function()
       vim.g.gruvbox_material_background = 'medium'
       vim.g.gruvbox_material_better_performance = 1
-      vim.cmd('colorscheme gruvbox-material')
+      vim.g.gruvbox_material_forground = 'material'
+      vim.g.gruvbox_material_enable_italic = true
+      vim.g.gruvbox_material_transparent_background = 1
+      vim.opt.background = 'dark'
+      vim.cmd.colorscheme('gruvbox-material')
     end
   }
 
@@ -68,16 +72,24 @@ return require('packer').startup(function(use)
       local hipatterns = require('mini.hipatterns')
       hipatterns.setup({
         highlighters = {
-          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
           fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
           hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
           todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
           note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
 
-          -- Highlight hex color strings (`#rrggbb`) using that color
           hex_color = hipatterns.gen_highlighter.hex_color(),
         },
       })
+    end,
+  }
+
+  use {
+    'Exafunction/codeium.vim',
+    config = function()
+      vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+      vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+      vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+      vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
     end,
   }
 end)

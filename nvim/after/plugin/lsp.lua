@@ -12,23 +12,25 @@ lsp_zero.on_attach(function(_, bufnr)
   vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
   vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+  vim.keymap.set("n", "<leader>lr", function() vim.cmd("LspRestart") end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = { 'tsserver' },
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()
       local lua_opts = lsp_zero.nvim_lua_ls()
       require('lspconfig').lua_ls.setup(lua_opts)
     end,
-    tsserver = function()
-      require('lspconfig').tsserver.setup {
+    ts_ls = function()
+      require('lspconfig').ts_ls.setup {
+        root_dir = require('lspconfig.util').root_pattern("package.json"),
         on_attach = function(_, bufnr)
           vim.keymap.set('n', '<leader>im', '<cmd>OrganizeImports<cr>', { buffer = bufnr })
         end,
+        single_file_support =false,
         commands = {
           OrganizeImports = {
             function()
@@ -42,6 +44,11 @@ require('mason-lspconfig').setup({
             description = 'Organize Imports'
           }
         }
+      }
+    end,
+   denols = function()
+      require('lspconfig').denols.setup {
+        root_dir = require('lspconfig.util').root_pattern("deno.json", "deno.jsonc", ".denorc"),
       }
     end
   }

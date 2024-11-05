@@ -1,0 +1,16 @@
+;; Caps to escape/control configuration for Kanata
+
+(defsrc
+  caps mbck
+)
+
+(defalias
+  escctrl (tap-hold 100 100 esc lctl)
+  forward-to-leftclick (multi XX)
+)
+
+(deflayer base
+  @escctrl
+  @forward-to-leftclick
+)
+

@@ -10,16 +10,18 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+set $alt Mod1
+set $ctrl Control
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:monospace 1
 
-gaps inner 1
-gaps left 30
-gaps right 31
-gaps bottom 15
-gaps top 39
+# gaps inner 1
+# gaps left 30
+# gaps right 31
+# gaps bottom 15
+# gaps top 30
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -43,15 +45,16 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec alacritty
+bindsym $alt+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# refresh scripts
-bindsym $mod+Shift+p exec ~/.config/i3status/autoname_workspaces.py
+# polybar
+bindsym $mod+Shift+o exec ~/.config/i3/polybar.sh
 
 # menu
-bindsym $mod+slash exec ulauncher
+bindsym $mod+slash exec rofi -show drun
 
 # window persist
 bindsym $mod+Shift+minus move scratchpad
@@ -134,6 +137,8 @@ bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
+bindsym $mod+Tab workspace back_and_forth
+
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
@@ -151,7 +156,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec rofi -show p -modi p:~/.config/rofi/power-menu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -179,6 +184,9 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+bindsym $mod+Shift+p exec maim -s | xclip -selection clipboard -t image/png
+bindsym $mod+p exec maim -s > /home/abdiel/Pictures/$(date +%s).png
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -208,9 +216,11 @@ client.placeholder      #494C4F #494C4F #494C4F #494C4F   #494C4F
 
 client.background       #2B2B2B
 
-
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec --no-startup-id xrandr --output HDMI-A-0 --mode 1920x1080
+exec --no-startup-id picom --config ~/.config/picom/picom.conf -b
+#exec --no-startup-id xrandr --output HDMI-1 --mode 1920x1080 --brightness .8
 exec --no-startup-id nitrogen --restore &
+exec --no-startup-id pactl load-module module-null-sink sink_name=audiorelay-virtual-mic-sink sink_properties=device.description="Virtual-Mic-Sink"
+exec --no-startup-id pactl load-module module-remap-source master=audiorelay-virtual-mic-sink.monitor source_name=audiorelay-virtual-mic-sink source_properties=device.description="Virtual-Mic"
 exec_always --no-startup-id ~/.config/i3/polybar.sh
