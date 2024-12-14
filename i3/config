@@ -45,7 +45,6 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec alacritty
-bindsym $alt+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -216,11 +215,11 @@ client.placeholder      #494C4F #494C4F #494C4F #494C4F   #494C4F
 
 client.background       #2B2B2B
 
-#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id picom --config ~/.config/picom/picom.conf -b
-#exec --no-startup-id xrandr --output HDMI-1 --mode 1920x1080 --brightness .8
 exec --no-startup-id nitrogen --restore &
 exec --no-startup-id pactl load-module module-null-sink sink_name=audiorelay-virtual-mic-sink sink_properties=device.description="Virtual-Mic-Sink"
 exec --no-startup-id pactl load-module module-remap-source master=audiorelay-virtual-mic-sink.monitor source_name=audiorelay-virtual-mic-sink source_properties=device.description="Virtual-Mic"
+exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 exec_always --no-startup-id ~/.config/i3/polybar.sh
+

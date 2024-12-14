@@ -1,6 +1,6 @@
 configuration {
  modi: "run";
- font: "Cantarell 14";
+ font: "JetBrainsMono Nerd Font 14";
  modi: "window,drun,ssh";
  icon-theme: "Adwaita";
  show-icons: true;

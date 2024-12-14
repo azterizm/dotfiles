@@ -23,7 +23,7 @@ return require('packer').startup(function(use)
 
   use('nvim-treesitter/nvim-treesitter', { run = ":TSUpdate" })
 
-  use "nvim-lua/plenary.nvim" -- don't forget to add this one if you don't have it yet!
+  use "nvim-lua/plenary.nvim"
   use {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
@@ -84,12 +84,9 @@ return require('packer').startup(function(use)
   }
 
   use {
-    'Exafunction/codeium.vim',
+    "supermaven-inc/supermaven-nvim",
     config = function()
-      vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
-      vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
-      vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
-      vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+      require("supermaven-nvim").setup({})
     end,
   }
 end)
