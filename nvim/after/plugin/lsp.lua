@@ -30,7 +30,7 @@ require('mason-lspconfig').setup({
         on_attach = function(_, bufnr)
           vim.keymap.set('n', '<leader>im', '<cmd>OrganizeImports<cr>', { buffer = bufnr })
         end,
-        single_file_support =false,
+        single_file_support = false,
         commands = {
           OrganizeImports = {
             function()
@@ -46,11 +46,17 @@ require('mason-lspconfig').setup({
         }
       }
     end,
-   denols = function()
+    denols = function()
       require('lspconfig').denols.setup {
         root_dir = require('lspconfig.util').root_pattern("deno.json", "deno.jsonc", ".denorc"),
       }
+    end,
+    emmet_language_server = function()
+      require('lspconfig').emmet_language_server.setup {
+        filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "pug", "typescriptreact", "typescript" },
+      }
     end
+
   }
 })
 

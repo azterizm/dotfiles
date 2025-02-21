@@ -163,7 +163,7 @@ random_string() {
 
 # android 
 export ANDROID_HOME=$HOME/Android/Sdk
-export PATH="$PATH:$ANDROID_HOME/tooeza:/home/abdiel/android-studio/bin:/home/abdiel/Android/Sdk/emulator/:$HOME/.local/bin/"
+export PATH="$PATH:$ANDROID_HOME/tooeza:/home/abdiel/android-studio/bin:/home/abdiel/Android/Sdk/emulator/:$HOME/.local/bin/:$HOME/Android/Sdk/platform-tools/"
 export JAVA_HOME="/home/abdiel/android-studio/jbr"
 
 # FZF
@@ -178,4 +178,11 @@ export PATH=$BUN_INSTALL/bin:$PATH
 
 # yarn
 COREPACK_ENABLE_STRICT=false
+
+# OpenAI
+export OPENAI_API_KEY=''
+export GEMINI_API_KEY=''
+
+# Chrome
+export CHROME_REMOTE_DESKTOP_DEFAULT_DESKTOP_SIZES=1920x1280
 

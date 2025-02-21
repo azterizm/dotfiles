@@ -40,6 +40,9 @@ bindsym $mod+Shift+greater exec --no-startup-id pactl set-sink-volume @DEFAULT_S
 bindsym $mod+Shift+less exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym $mod+Shift+slash exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 
+# mouseless
+bindsym $ctrl+Shift+m exec --no-startup-id /home/abdiel/xmouseless/xmouseless
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 

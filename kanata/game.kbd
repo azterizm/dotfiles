@@ -3,7 +3,12 @@
 )
 
 (defsrc
-  caps mbck
+  caps mbck 
+)
+
+(defvar
+  tap-time 500
+  hold-time 200
 )
 
 (defalias
