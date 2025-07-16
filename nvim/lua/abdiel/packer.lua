@@ -25,12 +25,6 @@ return require('packer').startup(function(use)
 
   use "nvim-lua/plenary.nvim"
   use {
-    "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    dependencies = "nvim-lua/plenary.nvim",
-  }
-  use('mbbill/undotree')
-  use {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
     requires = {
@@ -66,22 +60,12 @@ return require('packer').startup(function(use)
     end,
   }
 
-  use {
-    'echasnovski/mini.nvim',
-    config = function()
-      local hipatterns = require('mini.hipatterns')
-      hipatterns.setup({
-        highlighters = {
-          fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-          hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-          todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-          note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-
-          hex_color = hipatterns.gen_highlighter.hex_color(),
-        },
-      })
-    end,
-  }
+use {
+  "eero-lehtinen/oklch-color-picker.nvim",
+  config = function()
+    require("oklch-color-picker").setup({})
+  end
+}
 
   use {
     "supermaven-inc/supermaven-nvim",
@@ -89,4 +73,40 @@ return require('packer').startup(function(use)
       require("supermaven-nvim").setup({})
     end,
   }
+
+  use {
+    "folke/snacks.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+    },
+  }
+
+  use {
+  "mikavilpas/yazi.nvim",
+  requires = {
+    "folke/snacks.nvim",
+  },
+  config = function()
+    require("yazi").setup({
+      open_for_directories = false,
+      keymaps = {
+        show_help = "<f1>",
+      },
+    })
+
+    -- Key mappings
+    local map = vim.keymap.set
+    local opts = { noremap = true, silent = true, desc = "" }
+
+    -- Open yazi at the current file
+    map({ "n", "v" }, "<leader>pv", "<cmd>Yazi<cr>", vim.tbl_extend("force", opts, { desc = "Open yazi at the current file" }))
+
+    -- Open yazi in current working directory
+    map("n", "<leader>pg", "<cmd>Yazi cwd<cr>", vim.tbl_extend("force", opts, { desc = "Open the file manager in nvim's working directory" }))
+
+    vim.g.loaded_netrwPlugin = 1
+     vim.g.loaded_netrw = 1 -- Uncomment if fully replacing netrw
+  end
+}
+
 end)

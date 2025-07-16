@@ -1,5 +1,5 @@
 vim.g.mapleader = " "
-vim.keymap.set("n","<leader>pv",vim.cmd.Ex)
+--vim.keymap.set("n","<leader>pv",vim.cmd.Ex)
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -26,7 +26,20 @@ vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+
+local function close_all_buffers_but_current()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local buffers = vim.api.nvim_list_bufs()
+  for _, buf in ipairs(buffers) do
+    if buf ~= current_buf then
+      vim.api.nvim_buf_delete(buf, {})
+    end
+  end
+end
+vim.keymap.set('n', '<leader>x', close_all_buffers_but_current, { silent = true, desc = "Close all buffers except current" })
+
+vim.keymap.set('n', '<C-S-P>', '<cmd>bprevious<CR>')
+vim.keymap.set('n', '<C-S-N>', '<cmd>bnext<CR>')
 
 
 

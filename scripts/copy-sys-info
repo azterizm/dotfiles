@@ -1,0 +1,199 @@
+#!/bin/bash
+
+# System Information Extractor
+# Gathers essential system info using standard Linux commands
+
+# Check if xsel is installed
+if ! command -v xsel &> /dev/null; then
+    echo "Error: xsel is not installed. Please install it first."
+    echo "On Ubuntu/Debian: sudo apt install xsel"
+    echo "On Fedora/RHEL: sudo dnf install xsel"
+    echo "On Arch: sudo pacman -S xsel"
+    exit 1
+fi
+
+# Function to get OS information
+get_os_info() {
+    if [[ -f /etc/os-release ]]; then
+        source /etc/os-release
+        echo "$PRETTY_NAME"
+    elif [[ -f /etc/lsb-release ]]; then
+        source /etc/lsb-release
+        echo "$DISTRIB_DESCRIPTION"
+    else
+        uname -s
+    fi
+}
+
+# Function to get hostname/model
+get_host_info() {
+    local hostname=$(hostname)
+    local model=""
+    
+    if [[ -f /sys/devices/virtual/dmi/id/product_name ]]; then
+        model=$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)
+    fi
+    
+    if [[ -n "$model" && "$model" != "System Product Name" ]]; then
+        echo "$hostname@$model"
+    else
+        echo "$hostname"
+    fi
+}
+
+# Function to get kernel
+get_kernel() {
+    uname -r
+}
+
+# Function to get uptime
+get_uptime() {
+    uptime -p | sed 's/up //'
+}
+
+# Function to get shell
+get_shell() {
+    basename "$SHELL" 2>/dev/null || echo "unknown"
+}
+
+# Function to get window manager
+get_wm() {
+    if [[ -n "$XDG_CURRENT_DESKTOP" ]]; then
+        echo "$XDG_CURRENT_DESKTOP"
+    elif [[ -n "$DESKTOP_SESSION" ]]; then
+        echo "$DESKTOP_SESSION"
+    elif pgrep -x "i3" >/dev/null; then
+        echo "i3"
+    elif pgrep -x "dwm" >/dev/null; then
+        echo "dwm"
+    elif pgrep -x "bspwm" >/dev/null; then
+        echo "bspwm"
+    elif pgrep -x "openbox" >/dev/null; then
+        echo "openbox"
+    elif pgrep -x "awesome" >/dev/null; then
+        echo "awesome"
+    else
+        echo "unknown"
+    fi
+}
+
+# Function to get display info
+get_display() {
+    if command -v xrandr &> /dev/null && [[ -n "$DISPLAY" ]]; then
+        xrandr --current | grep -E " connected (primary )?[0-9]" | head -1 | \
+        awk '{print $1 ": " $3}' | sed 's/primary //'
+    else
+        echo "unknown"
+    fi
+}
+
+# Function to get CPU info
+get_cpu() {
+    if [[ -f /proc/cpuinfo ]]; then
+        local cpu_model=$(grep "model name" /proc/cpuinfo | head -1 | cut -d: -f2 | sed 's/^ *//')
+        local cpu_cores=$(nproc)
+        local cpu_freq=$(grep "cpu MHz" /proc/cpuinfo | head -1 | cut -d: -f2 | sed 's/^ *//' | cut -d. -f1)
+        
+        if [[ -n "$cpu_freq" ]]; then
+            echo "$cpu_model ($cpu_cores cores) @ ${cpu_freq}MHz"
+        else
+            echo "$cpu_model ($cpu_cores cores)"
+        fi
+    else
+        echo "unknown"
+    fi
+}
+
+# Function to get GPU info
+get_gpu() {
+    if command -v lspci &> /dev/null; then
+        lspci | grep -i "vga\|3d\|display" | head -1 | cut -d: -f3 | sed 's/^ *//'
+    elif command -v nvidia-smi &> /dev/null; then
+        nvidia-smi --query-gpu=name --format=csv,noheader,nounits | head -1
+    else
+        echo "unknown"
+    fi
+}
+
+# Function to get memory info
+get_memory() {
+    if [[ -f /proc/meminfo ]]; then
+        local total_kb=$(grep "MemTotal" /proc/meminfo | awk '{print $2}')
+        local available_kb=$(grep "MemAvailable" /proc/meminfo | awk '{print $2}')
+        local used_kb=$((total_kb - available_kb))
+        
+        local total_gb=$(echo "scale=2; $total_kb / 1024 / 1024" | bc 2>/dev/null || echo "0")
+        local used_gb=$(echo "scale=2; $used_kb / 1024 / 1024" | bc 2>/dev/null || echo "0")
+        local percent=$(echo "scale=0; $used_kb * 100 / $total_kb" | bc 2>/dev/null || echo "0")
+        
+        echo "${used_gb}GB / ${total_gb}GB (${percent}%)"
+    else
+        echo "unknown"
+    fi
+}
+
+# Function to get storage info
+get_storage() {
+    if command -v df &> /dev/null; then
+        df -h / | tail -1 | awk '{print $3 " / " $2 " (" $5 ")"}'
+    else
+        echo "unknown"
+    fi
+}
+
+# Function to get terminal info
+get_terminal() {
+    if [[ -n "$TERM_PROGRAM" ]]; then
+        echo "$TERM_PROGRAM"
+    elif [[ -n "$TERMINAL" ]]; then
+        echo "$TERMINAL"
+    else
+        local parent_cmd=$(ps -p $PPID -o comm= 2>/dev/null)
+        if [[ -n "$parent_cmd" ]]; then
+            echo "$parent_cmd"
+        else
+            echo "unknown"
+        fi
+    fi
+}
+
+# Function to extract system info
+extract_system_info() {
+    echo "=== SYSTEM INFORMATION ==="
+    echo
+    
+    echo "OS: $(get_os_info)"
+    echo "Host: $(get_host_info)"
+    echo "Kernel: $(get_kernel)"
+    echo "Uptime: $(get_uptime)"
+    echo "Shell: $(get_shell)"
+    echo "WM/DE: $(get_wm)"
+    echo "Display: $(get_display)"
+    echo "Terminal: $(get_terminal)"
+    echo "CPU: $(get_cpu)"
+    echo "GPU: $(get_gpu)"
+    echo "Memory: $(get_memory)"
+    echo "Storage: $(get_storage)"
+    
+    echo
+    echo "=== Generated on $(date) ==="
+}
+
+# Gather system information
+echo "Gathering system information..."
+system_info=$(extract_system_info)
+
+# Display the extracted information
+echo "$system_info"
+
+# Copy to clipboard
+echo "$system_info" | xsel -ib
+
+if [[ $? -eq 0 ]]; then
+    echo
+    echo "✅ System information has been copied to clipboard!"
+else
+    echo
+    echo "❌ Failed to copy to clipboard"
+    exit 1
+fi

@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+
+# Exit immediately if a command exits with a non-zero status.
+set -e
+# Treat unset variables as an error when substituting.
+set -u
+# a pipeline's return status is the value of the last command to exit with a
+# non-zero status, or zero if no command exited with a non-zero status
+set -o pipefail
+
+# --- Configuration ---
+# The OpenAI model to use for transcription.
+# 'whisper-1' is the standard high-quality model.
+OPENAI_MODEL="whisper-1"
+# The API endpoint for audio transcriptions.
+API_URL="https://api.openai.com/v1/audio/transcriptions"
+
+
+# --- Helper Functions ---
+
+# Function to print usage information
+usage() {
+  echo "Usage: $0 <path_to_audio_or_video_file>"
+  echo "  Generates a transcript for the given media file using OpenAI's Whisper API."
+  echo "  The transcript will be saved as <filename>.txt in the same directory."
+  echo
+  echo "Requirements:"
+  echo "  - OPENAI_API_KEY environment variable must be set."
+  echo "  - ffmpeg, curl, and jq must be installed and in your PATH."
+}
+
+# Function to check for required command-line tools
+check_dependencies() {
+  local missing_deps=0
+  for cmd in ffmpeg curl jq; do
+    if ! command -v "$cmd" &> /dev/null; then
+      echo "Error: Required command '$cmd' is not installed." >&2
+      missing_deps=1
+    fi
+  done
+  if [ "$missing_deps" -eq 1 ]; then
+    echo "Please install the missing dependencies and try again." >&2
+    exit 1
+  fi
+}
+
+
+# --- Main Script Logic ---
+
+# 1. Check for Dependencies
+check_dependencies
+
+# 2. Validate OPENAI_API_KEY
+if [[ -z "${OPENAI_API_KEY:-}" ]]; then
+  echo "Error: The OPENAI_API_KEY environment variable is not set." >&2
+  usage
+  exit 1
+fi
+
+# 3. Validate Input Arguments
+if [[ $# -ne 1 ]]; then
+  echo "Error: Invalid number of arguments." >&2
+  usage
+  exit 1
+fi
+
+INPUT_FILE="$1"
+if [[ ! -f "$INPUT_FILE" ]]; then
+  echo "Error: File not found at '$INPUT_FILE'" >&2
+  exit 1
+fi
+
+# Define a temporary file for the extracted audio.
+# Using mktemp is safer and avoids race conditions.
+# We will clean this up at the end.
+TEMP_AUDIO_FILE=$(mktemp --suffix=".mp3")
+# Setup a trap to ensure the temporary file is cleaned up on script exit (even on error)
+trap 'rm -f "$TEMP_AUDIO_FILE"' EXIT
+
+# 4. Prepare Audio File
+echo "Processing input file: $INPUT_FILE"
+
+# Use ffmpeg to convert the input file to a high-quality MP3.
+# This works for both audio and video files, extracting the audio from video.
+# -i: input file
+# -vn: no video (discards video stream)
+# -acodec libmp3lame: specify mp3 encoder
+# -q:a 2: variable bitrate, high quality (0 is highest, 2 is great for this)
+# -y: overwrite output file without asking
+echo "Converting to a compatible audio format (MP3)..."
+if ! ffmpeg -i "$INPUT_FILE" -vn -acodec libmp3lame -q:a 2 -y "$TEMP_AUDIO_FILE" &> /dev/null; then
+    echo "Error: ffmpeg failed to process the file. Is it a valid media file?" >&2
+    exit 1
+fi
+
+echo "Audio extracted and prepared successfully."
+
+# 5. Call OpenAI API
+echo "Uploading audio to OpenAI API for transcription..."
+
+# Use curl to send the request.
+# --silent: Don't show progress meter or other non-error output.
+# --show-error: Show an error message if curl fails.
+# The API response will be stored in the RESPONSE variable.
+RESPONSE=$(curl --silent --show-error \
+  --request POST \
+  --url "$API_URL" \
+  --header "Authorization: Bearer $OPENAI_API_KEY" \
+  --header 'Content-Type: multipart/form-data' \
+  --form file=@"$TEMP_AUDIO_FILE" \
+  --form model="$OPENAI_MODEL"
+)
+
+# 6. Process the Response
+# Check if the response contains an error from the API
+if echo "$RESPONSE" | jq -e '.error' > /dev/null; then
+  ERROR_MESSAGE=$(echo "$RESPONSE" | jq -r '.error.message')
+  echo "Error: OpenAI API returned an error." >&2
+  echo "API Message: $ERROR_MESSAGE" >&2
+  exit 1
+fi
+
+# Extract the transcript text using jq
+# -r flag outputs the raw string without quotes
+TRANSCRIPT=$(echo "$RESPONSE" | jq -r '.text')
+
+if [[ -z "$TRANSCRIPT" || "$TRANSCRIPT" == "null" ]]; then
+  echo "Error: Could not extract transcript from API response." >&2
+  echo "Full API Response:" >&2
+  echo "$RESPONSE" >&2
+  exit 1
+fi
+
+# 7. Save the Transcript
+# Get the directory and base filename (without extension) of the input file
+DIRNAME=$(dirname "$INPUT_FILE")
+BASENAME=$(basename "$INPUT_FILE")
+FILENAME_NO_EXT="${BASENAME%.*}"
+OUTPUT_FILE="$DIRNAME/$FILENAME_NO_EXT.txt"
+
+echo "$TRANSCRIPT" > "$OUTPUT_FILE"
+
+echo "--------------------------------------------------"
+echo "✅ Transcription complete!"
+echo "   Transcript saved to: $OUTPUT_FILE"
+echo "--------------------------------------------------"
+
+# The 'trap' will handle cleanup of the temporary file.
+exit 0

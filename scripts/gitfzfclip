@@ -1,0 +1,110 @@
+#!/bin/bash
+#
+# gitfzfclip.sh: A standalone script to select project files via fzf,
+# format them with a project tree and code blocks, and copy the result
+# to the clipboard for Large Language Model context.
+#
+# Dependencies: fzf, bat, tree, git, and a clipboard utility (xclip, wl-copy, pbcopy).
+
+# All logic is placed in a main function to allow the use of `local` variables.
+main() {
+  # --- 1. GATHER FILES ---
+
+  local initial_files=""
+  # Auto-select package.json if it exists in the git repository root
+  local git_root
+  git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -n "$git_root" && -f "$git_root/package.json" ]]; then
+    # We use a relative path for package.json to keep output clean
+    initial_files="package.json"
+    echo "Found and will auto-include root package.json"
+  fi
+
+  # Use fzf to select additional files, respecting .gitignore
+  # The preview command uses `bat` for syntax highlighting
+  local selected_files
+  selected_files=$(git ls-files -co --exclude-standard \
+    | fzf --multi --height 80% --preview 'bat --style=numbers --color=always {}')
+
+  # Combine auto-selected and user-selected files, ensuring no duplicates
+  local all_files
+  all_files=$(printf "%s\n%s" "$initial_files" "$selected_files" | sed '/^$/d' | sort -u)
+
+  # If no files are chosen in the end, exit.
+  if [[ -z "$all_files" ]]; then
+    echo "No files selected. Aborting."
+    return 1
+  fi
+
+  # --- 2. GENERATE AND COPY CONTEXT ---
+
+  # Use a subshell to stream all output directly to the clipboard command
+  {
+    # Section 1: The File Tree
+    echo "Tree:"
+    echo '```'
+    if command -v tree &> /dev/null; then
+      # Use `tree`, respecting .gitignore, with a reasonable depth limit.
+      # Exclude node_modules explicitly for robustness.
+      tree --gitignore -L 3 -I 'node_modules'
+    else
+      # Fallback if `tree` is not installed
+      echo "(tree command not found. Showing a flat list of all git-tracked files instead)"
+      git ls-files
+    fi
+    echo '```'
+    echo # blank line
+
+    # Section 2: The File Contents
+    echo "Code:"
+    while IFS= read -r file; do
+      # Skip empty lines that might result from the list creation
+      [[ -z "$file" ]] && continue
+
+      # Determine language for markdown fence based on extension
+      local extension="${file##*.}"
+      local lang=""
+      case "$extension" in
+        js|jsx)    lang="javascript" ;;
+        ts|tsx)    lang="typescript" ;;
+        py)        lang="python" ;;
+        rb)        lang="ruby" ;;
+        go)        lang="go" ;;
+        rs)        lang="rust" ;;
+        java)      lang="java" ;;
+        sh)        lang="bash" ;;
+        md)        lang="markdown" ;;
+        html)      lang="html" ;;
+        css)       lang="css" ;;
+        json)      lang="json" ;;
+        yml|yaml)  lang="yaml" ;;
+        *)         lang="" ;; # Default to no language identifier
+      esac
+
+      echo "# ─── FILE: $file ─────────────────────────────────────────"
+      echo "~~~${lang}" # Use ~~~ for outer block to avoid nesting issues with ```
+      cat "$file"
+      echo "~~~"
+      echo # blank line
+    done <<< "$all_files"
+
+  } | {
+    # Pick the correct clipboard command for the system
+    if command -v pbcopy >/dev/null; then pbcopy
+    elif command -v xclip >/dev/null; then xclip -selection clipboard
+    elif command -v wl-copy >/dev/null; then wl-copy
+    elif command -v clip >/dev/null; then clip
+    else
+      echo "Error: No clipboard command (pbcopy, xclip, wl-copy) found." >&2
+      return 1
+    fi
+  }
+
+  local file_count
+  file_count=$(echo "$all_files" | wc -l | tr -d ' ') # Count files and trim whitespace
+  echo "📋 Copied project tree and $file_count file(s) to clipboard."
+}
+
+# --- SCRIPT EXECUTION ---
+# Call the main function, passing all script arguments to it.
+main "$@"

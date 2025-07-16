@@ -47,7 +47,10 @@ bindsym $ctrl+Shift+m exec --no-startup-id /home/abdiel/xmouseless/xmouseless
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec ghostty
+
+# emoji picker
+bindsym $mod+x exec /usr/bin/emoji-picker
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -187,7 +190,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bindsym $mod+Shift+p exec maim -s | xclip -selection clipboard -t image/png
+# Screenshot
+bindsym $mod+Shift+p exec spectacle -r -c
 bindsym $mod+p exec maim -s > /home/abdiel/Pictures/$(date +%s).png
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -218,11 +222,17 @@ client.placeholder      #494C4F #494C4F #494C4F #494C4F   #494C4F
 
 client.background       #2B2B2B
 
-exec --no-startup-id nm-applet
-exec --no-startup-id picom --config ~/.config/picom/picom.conf -b
+exec --no-startup-id nm-applet &
+exec --no-startup-id blueman-applet &
+exec --no-startup-id lxpolkit &
 exec --no-startup-id nitrogen --restore &
 exec --no-startup-id pactl load-module module-null-sink sink_name=audiorelay-virtual-mic-sink sink_properties=device.description="Virtual-Mic-Sink"
 exec --no-startup-id pactl load-module module-remap-source master=audiorelay-virtual-mic-sink.monitor source_name=audiorelay-virtual-mic-sink source_properties=device.description="Virtual-Mic"
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+exec --no-startup-id /usr/lib/pam_kwallet_init
+exec --no-startup-id exec ~/scripts/health_reminders.sh
+exec --no-startup-id dunst &
+exec --no-startup-id /usr/bin/slack -u &
+exec --no-startup-id /usr/bin/flatpak run md.obsidian.Obsidian &
 exec_always --no-startup-id ~/.config/i3/polybar.sh
 

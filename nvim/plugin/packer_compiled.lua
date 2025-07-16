@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/home/abdiel/.cache/nvim/packer_hererocks/2.1.1713484068/share/lua/5.1/?.lua;/home/abdiel/.cache/nvim/packer_hererocks/2.1.1713484068/share/lua/5.1/?/init.lua;/home/abdiel/.cache/nvim/packer_hererocks/2.1.1713484068/lib/luarocks/rocks-5.1/?.lua;/home/abdiel/.cache/nvim/packer_hererocks/2.1.1713484068/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/home/abdiel/.cache/nvim/packer_hererocks/2.1.1713484068/lib/lua/5.1/?.so"
+local package_path_str = "/home/abdiel/.cache/nvim/packer_hererocks/2.1.1720049189/share/lua/5.1/?.lua;/home/abdiel/.cache/nvim/packer_hererocks/2.1.1720049189/share/lua/5.1/?/init.lua;/home/abdiel/.cache/nvim/packer_hererocks/2.1.1720049189/lib/luarocks/rocks-5.1/?.lua;/home/abdiel/.cache/nvim/packer_hererocks/2.1.1720049189/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/home/abdiel/.cache/nvim/packer_hererocks/2.1.1720049189/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -110,11 +110,6 @@ _G.packer_plugins = {
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/gruvbox-material",
     url = "https://github.com/sainnhe/gruvbox-material"
   },
-  harpoon = {
-    loaded = true,
-    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/harpoon",
-    url = "https://github.com/ThePrimeagen/harpoon"
-  },
   ["lsp-zero.nvim"] = {
     loaded = true,
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/lsp-zero.nvim",
@@ -129,12 +124,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
-  },
-  ["mini.nvim"] = {
-    config = { "\27LJ\2\nÓ\3\0\0\a\0\16\0\0216\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\14\0005\4\4\0005\5\3\0=\5\5\0045\5\6\0=\5\a\0045\5\b\0=\5\t\0045\5\n\0=\5\v\0049\5\f\0009\5\r\5B\5\1\2=\5\r\4=\4\15\3B\1\2\1K\0\1\0\17highlighters\1\0\1\17highlighters\0\14hex_color\20gen_highlighter\tnote\1\0\2\ngroup\23MiniHipatternsNote\fpattern\25%f[%w]()NOTE()%f[%W]\ttodo\1\0\2\ngroup\23MiniHipatternsTodo\fpattern\25%f[%w]()TODO()%f[%W]\thack\1\0\2\ngroup\23MiniHipatternsHack\fpattern\25%f[%w]()HACK()%f[%W]\nfixme\1\0\5\tnote\0\nfixme\0\ttodo\0\14hex_color\0\thack\0\1\0\2\ngroup\24MiniHipatternsFixme\fpattern\26%f[%w]()FIXME()%f[%W]\nsetup\20mini.hipatterns\frequire\0" },
-    loaded = true,
-    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/mini.nvim",
-    url = "https://github.com/echasnovski/mini.nvim"
   },
   ["nvim-autopairs"] = {
     config = { "\27LJ\2\n@\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\19nvim-autopairs\frequire\0" },
@@ -159,6 +148,12 @@ _G.packer_plugins = {
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
+  ["oklch-color-picker.nvim"] = {
+    config = { "\27LJ\2\nD\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\23oklch-color-picker\frequire\0" },
+    loaded = true,
+    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/oklch-color-picker.nvim",
+    url = "https://github.com/eero-lehtinen/oklch-color-picker.nvim"
+  },
   ["outline.nvim"] = {
     config = { "\27LJ\2\nœ\1\0\0\6\0\n\0\0156\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\0016\0\a\0'\2\b\0B\0\2\0029\0\t\0004\2\0\0B\0\2\1K\0\1\0\nsetup\foutline\frequire\1\0\1\tdesc\19Toggle Outline\21<cmd>Outline<CR>\14<leader>o\6n\bset\vkeymap\bvim\0" },
     loaded = true,
@@ -175,6 +170,11 @@ _G.packer_plugins = {
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
+  ["snacks.nvim"] = {
+    loaded = true,
+    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/snacks.nvim",
+    url = "https://github.com/folke/snacks.nvim"
+  },
   ["supermaven-nvim"] = {
     config = { "\27LJ\2\nA\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\20supermaven-nvim\frequire\0" },
     loaded = true,
@@ -186,26 +186,31 @@ _G.packer_plugins = {
     path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
-  undotree = {
+  ["yazi.nvim"] = {
+    config = { "\27LJ\2\nþ\3\0\0\f\0\23\0+6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\0016\0\6\0009\0\a\0009\0\b\0005\1\t\0\18\2\0\0005\4\n\0'\5\v\0'\6\f\0006\a\6\0009\a\r\a'\t\14\0\18\n\1\0005\v\15\0B\a\4\0A\2\3\1\18\2\0\0'\4\16\0'\5\17\0'\6\18\0006\a\6\0009\a\r\a'\t\14\0\18\n\1\0005\v\19\0B\a\4\0A\2\3\0016\2\6\0009\2\20\2)\3\1\0=\3\21\0026\2\6\0009\2\20\2)\3\1\0=\3\22\2K\0\1\0\17loaded_netrw\23loaded_netrwPlugin\6g\1\0\1\tdesc6Open the file manager in nvim's working directory\22<cmd>Yazi cwd<cr>\15<leader>pg\6n\1\0\1\tdesc\"Open yazi at the current file\nforce\15tbl_extend\18<cmd>Yazi<cr>\15<leader>pv\1\3\0\0\6n\6v\1\0\3\fnoremap\2\tdesc\5\vsilent\2\bset\vkeymap\bvim\fkeymaps\1\0\1\14show_help\t<f1>\1\0\2\25open_for_directories\1\fkeymaps\0\nsetup\tyazi\frequire\0" },
     loaded = true,
-    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/undotree",
-    url = "https://github.com/mbbill/undotree"
+    path = "/home/abdiel/.local/share/nvim/site/pack/packer/start/yazi.nvim",
+    url = "https://github.com/mikavilpas/yazi.nvim"
   }
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: mini.nvim
-time([[Config for mini.nvim]], true)
-try_loadstring("\27LJ\2\nÓ\3\0\0\a\0\16\0\0216\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\14\0005\4\4\0005\5\3\0=\5\5\0045\5\6\0=\5\a\0045\5\b\0=\5\t\0045\5\n\0=\5\v\0049\5\f\0009\5\r\5B\5\1\2=\5\r\4=\4\15\3B\1\2\1K\0\1\0\17highlighters\1\0\1\17highlighters\0\14hex_color\20gen_highlighter\tnote\1\0\2\ngroup\23MiniHipatternsNote\fpattern\25%f[%w]()NOTE()%f[%W]\ttodo\1\0\2\ngroup\23MiniHipatternsTodo\fpattern\25%f[%w]()TODO()%f[%W]\thack\1\0\2\ngroup\23MiniHipatternsHack\fpattern\25%f[%w]()HACK()%f[%W]\nfixme\1\0\5\tnote\0\nfixme\0\ttodo\0\14hex_color\0\thack\0\1\0\2\ngroup\24MiniHipatternsFixme\fpattern\26%f[%w]()FIXME()%f[%W]\nsetup\20mini.hipatterns\frequire\0", "config", "mini.nvim")
-time([[Config for mini.nvim]], false)
--- Config for: outline.nvim
-time([[Config for outline.nvim]], true)
-try_loadstring("\27LJ\2\nœ\1\0\0\6\0\n\0\0156\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\0016\0\a\0'\2\b\0B\0\2\0029\0\t\0004\2\0\0B\0\2\1K\0\1\0\nsetup\foutline\frequire\1\0\1\tdesc\19Toggle Outline\21<cmd>Outline<CR>\14<leader>o\6n\bset\vkeymap\bvim\0", "config", "outline.nvim")
-time([[Config for outline.nvim]], false)
 -- Config for: gruvbox-material
 time([[Config for gruvbox-material]], true)
 try_loadstring("\27LJ\2\nì\2\0\0\3\0\15\0\0306\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0)\1\1\0=\1\4\0006\0\0\0009\0\1\0'\1\6\0=\1\5\0006\0\0\0009\0\1\0+\1\2\0=\1\a\0006\0\0\0009\0\1\0)\1\1\0=\1\b\0006\0\0\0009\0\t\0'\1\v\0=\1\n\0006\0\0\0009\0\f\0009\0\r\0'\2\14\0B\0\2\1K\0\1\0\21gruvbox-material\16colorscheme\bcmd\tdark\15background\bopt,gruvbox_material_transparent_background#gruvbox_material_enable_italic\rmaterial\31gruvbox_material_forground(gruvbox_material_better_performance\vmedium gruvbox_material_background\6g\bvim\0", "config", "gruvbox-material")
 time([[Config for gruvbox-material]], false)
+-- Config for: oklch-color-picker.nvim
+time([[Config for oklch-color-picker.nvim]], true)
+try_loadstring("\27LJ\2\nD\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\23oklch-color-picker\frequire\0", "config", "oklch-color-picker.nvim")
+time([[Config for oklch-color-picker.nvim]], false)
+-- Config for: yazi.nvim
+time([[Config for yazi.nvim]], true)
+try_loadstring("\27LJ\2\nþ\3\0\0\f\0\23\0+6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\0016\0\6\0009\0\a\0009\0\b\0005\1\t\0\18\2\0\0005\4\n\0'\5\v\0'\6\f\0006\a\6\0009\a\r\a'\t\14\0\18\n\1\0005\v\15\0B\a\4\0A\2\3\1\18\2\0\0'\4\16\0'\5\17\0'\6\18\0006\a\6\0009\a\r\a'\t\14\0\18\n\1\0005\v\19\0B\a\4\0A\2\3\0016\2\6\0009\2\20\2)\3\1\0=\3\21\0026\2\6\0009\2\20\2)\3\1\0=\3\22\2K\0\1\0\17loaded_netrw\23loaded_netrwPlugin\6g\1\0\1\tdesc6Open the file manager in nvim's working directory\22<cmd>Yazi cwd<cr>\15<leader>pg\6n\1\0\1\tdesc\"Open yazi at the current file\nforce\15tbl_extend\18<cmd>Yazi<cr>\15<leader>pv\1\3\0\0\6n\6v\1\0\3\fnoremap\2\tdesc\5\vsilent\2\bset\vkeymap\bvim\fkeymaps\1\0\1\14show_help\t<f1>\1\0\2\25open_for_directories\1\fkeymaps\0\nsetup\tyazi\frequire\0", "config", "yazi.nvim")
+time([[Config for yazi.nvim]], false)
+-- Config for: outline.nvim
+time([[Config for outline.nvim]], true)
+try_loadstring("\27LJ\2\nœ\1\0\0\6\0\n\0\0156\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\0016\0\a\0'\2\b\0B\0\2\0029\0\t\0004\2\0\0B\0\2\1K\0\1\0\nsetup\foutline\frequire\1\0\1\tdesc\19Toggle Outline\21<cmd>Outline<CR>\14<leader>o\6n\bset\vkeymap\bvim\0", "config", "outline.nvim")
+time([[Config for outline.nvim]], false)
 -- Config for: supermaven-nvim
 time([[Config for supermaven-nvim]], true)
 try_loadstring("\27LJ\2\nA\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\20supermaven-nvim\frequire\0", "config", "supermaven-nvim")

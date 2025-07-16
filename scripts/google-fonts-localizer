@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# Google Fonts Localizer
+# This script downloads Google Fonts and updates the stylesheet to use local fonts
+
+# Usage: ./google-fonts-localizer.sh "GOOGLE_FONTS_URL"
+# Example: ./google-fonts-localizer.sh "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+
+# Exit on error
+set -e
+
+# Function to print messages
+info() {
+  echo -e "\033[0;34m[INFO]\033[0m $1"
+}
+
+error() {
+  echo -e "\033[0;31m[ERROR]\033[0m $1"
+  exit 1
+}
+
+# Check if URL is provided
+if [ -z "$1" ]; then
+  error "Please provide a Google Fonts URL. Example: ./google-fonts-localizer.sh \"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\""
+fi
+
+GOOGLE_FONTS_URL="$1"
+FONTS_DIR="./fonts"
+CSS_DIR="./css"
+TEMP_DIR="./temp"
+
+# Create directories if they don't exist
+mkdir -p "$FONTS_DIR" "$CSS_DIR" "$TEMP_DIR"
+
+info "Starting Google Fonts localization process..."
+info "Using Google Fonts URL: $GOOGLE_FONTS_URL"
+
+# Extract font family name from URL for the CSS filename
+FONT_FAMILY=$(echo "$GOOGLE_FONTS_URL" | grep -oP 'family=\K[^:&]+' | head -1)
+if [ -z "$FONT_FAMILY" ]; then
+  error "Could not extract font family name from URL"
+fi
+
+CSS_FILENAME="${FONT_FAMILY,,}.css" # Convert to lowercase
+TEMP_CSS="$TEMP_DIR/original.css"
+FINAL_CSS="$CSS_DIR/$CSS_FILENAME"
+
+info "Font family detected: $FONT_FAMILY"
+info "Downloading stylesheet from Google Fonts..."
+
+# Download the CSS file with user agent to get all formats (including woff2)
+curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
+  "$GOOGLE_FONTS_URL" > "$TEMP_CSS"
+
+if [ ! -s "$TEMP_CSS" ]; then
+  error "Failed to download the stylesheet or the file is empty"
+fi
+
+info "Stylesheet downloaded successfully"
+info "Extracting font URLs..."
+
+# Extract all unique font URLs from the CSS
+FONT_URLS=$(grep -oP 'url\(\K[^)]+' "$TEMP_CSS" | sort -u)
+URL_COUNT=$(echo "$FONT_URLS" | wc -l)
+
+info "Found $URL_COUNT unique font URLs"
+info "Downloading font files..."
+
+# Create a sed script file for replacing URLs
+SED_SCRIPT="$TEMP_DIR/replace_urls.sed"
+> "$SED_SCRIPT"
+
+# Download each font file and update the sed script
+for URL in $FONT_URLS; do
+  # Clean URL (remove quotes if present)
+  CLEAN_URL=$(echo "$URL" | tr -d "'\"")
+  
+  # Extract filename and format
+  FILENAME=$(basename "$CLEAN_URL" | sed 's/\?.*//')
+  FORMAT=$(echo "$FILENAME" | grep -oP '\.\K[^.]+$')
+  
+  info "Downloading $FILENAME ($FORMAT)"
+  
+  # Download the font file
+  curl -s "$CLEAN_URL" -o "$FONTS_DIR/$FILENAME"
+  
+  # Add the replacement to sed script
+  echo "s|url($URL)|url('../fonts/$FILENAME')|g" >> "$SED_SCRIPT"
+done
+
+info "All font files downloaded successfully"
+info "Updating CSS to use local font files..."
+
+# Apply the replacements to create the final CSS
+sed -f "$SED_SCRIPT" "$TEMP_CSS" > "$FINAL_CSS"
+
+info "Creating font face observer JavaScript file..."
+
+# Create a simple JavaScript file to verify fonts are loaded
+JS_FILE="./js/${FONT_FAMILY,,}-loader.js"
+mkdir -p "./js"
+
+cat > "$JS_FILE" << EOF
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('$FONT_FAMILY font files loaded locally');
+  
+  // Add a class to the body once fonts are loaded
+  document.body.classList.add('fonts-loaded');
+});
+EOF
+
+info "Cleaning up temporary files..."
+rm -rf "$TEMP_DIR"
+
+info "Process completed successfully!"
+info "Your localized font files are in: $FONTS_DIR"
+info "Your updated CSS is at: $FINAL_CSS"
+info "A simple font loader script is at: $JS_FILE"
+info ""
+info "To use your local fonts, add this to your HTML:"
+info "<link rel=\"stylesheet\" href=\"css/$CSS_FILENAME\">"
+info "<script src=\"js/${FONT_FAMILY,,}-loader.js\"></script>"
